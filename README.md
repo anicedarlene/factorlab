@@ -49,7 +49,7 @@ python3 notebooks/00_sanity.py
 ## Milestones
 
 - [x] Project setup and README plan
-- [ ] Concept notes (`docs/concepts.md`)
+- [x] Concept notes (`docs/concepts.md`)
 - [ ] Data layer: download universe and store in DuckDB
 - [ ] Backtest engine with lagged signals and transaction costs
 - [ ] Momentum, low-volatility and reversal factors
