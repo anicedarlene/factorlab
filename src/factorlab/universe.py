@@ -8,7 +8,8 @@ def parse_ivv_holdings(path) -> pd.DataFrame:
     text = Path(path).read_text(encoding="utf-8-sig")
     lines = text.splitlines()
 
-    header_idx = next(
+    header_idx = next
+    (
         i for i, line in enumerate(lines) if "Ticker" in line and "Asset Class" in line
     )
     df = pd.read_csv(io.StringIO("\n".join(lines[header_idx:])), on_bad_lines="skip")
@@ -19,7 +20,8 @@ def parse_ivv_holdings(path) -> pd.DataFrame:
     #Keep only stocks, drop others
     df = df[df["Asset Class"].astype(str).str.strip() == "Equity"].copy()
 
-    out = pd.DataFrame(
+    out = pd.DataFrame
+    (
         {
             "ticker": df[ticker_col].astype(str).str.strip().str.upper(),
             "name": df["Name"],
