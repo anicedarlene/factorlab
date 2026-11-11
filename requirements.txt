@@ -28,6 +28,7 @@ distro==1.9.0
 docstring_parser==0.18.0
 duckdb==2.0.0
 et_xmlfile==2.0.0
+-e git+https://github.com/anicedarlene/factorlab.git@f66fe2394016ff0ee6569f3d21dad80aa6344293#egg=factorlab
 fastapi==0.139.0
 flatbuffers==25.12.19
 fonttools==4.68.0

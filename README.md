@@ -43,7 +43,8 @@ data/             local data (not committed)
 python3 -m venv .venv
 source .venv/bin/activate      
 python3 -m pip install -r requirements.txt
-python3 notebooks/00_sanity.py
+python3 -m pip install -e
+python3 notebooks/sanity.py
 ```
 
 ## Milestones
