@@ -45,6 +45,7 @@ source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 python3 -m pip install -e
 python3 notebooks/sanity.py
+duckdb data/factorlab.duckdb -ui
 ```
 
 ## Data
@@ -63,6 +64,18 @@ Two tickers in the holdings file were excluded because they have no usable price
 | `SKYD-WS` | A warrant, not a common stock. |
 
 The final universe is 503 tickers.
+
+### Data quality checks
+
+Checks run with `scripts/check_data.py` on [date]:
+
+- **Coverage:** 503 tickers, 1,444,124 rows, 2015-01-02 to 2026-11-10; all tickers end on the last date.
+- **Invalid prices:** none (no missing or non-positive adjusted closes).
+- **Missing days:** none inside any ticker's own history.
+- **Short histories:** four tickers have under about 1.1 years of data (VYLR, HONA, FDXF, Q), mostly recent listings or spin-offs; they will have no 12-1 momentum signal until they have enough history.
+- **Large daily moves (>40%):** [N total from the summary script; the 20 largest reviewed]. I verified [N]: for example MRNA on 2026-08-19 (+177%) matches a Phase 3 trial announcement. [DHR on 2016-07-05 (+61%) looks like an adjusted-price artifact around a spin-off and is left in the data but flagged.] [Unverified: list.]
+- **Stale prices:** SW, FERG and AMCR had [33-51]% zero-return days, [your finding]. [Excluded / handled as described.]
+- **Spot check against Yahoo Finance website:** [your result].
 
 ## Known limitations
 
