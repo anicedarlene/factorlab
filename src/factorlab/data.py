@@ -5,7 +5,7 @@ import duckdb
 import pandas as pd
 import yfinance as yf
 
-from factorlab.config import BATCH_SIZE, DB_PATH, MAX_RETRIES, PAUSE_SECONDS, START_DATE
+from factorlab.config import BATCH_SIZE, DB_PATH, MAX_RETRIES, PAUSE_SECONDS, START_DATE, END_DATE
 
 def get_connection(path=DB_PATH) -> duckdb.DuckDBPyConnection:
     if str(path) != ":memory:":
@@ -48,11 +48,11 @@ def to_long(raw: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
     df["volume"] = df["volume"].fillna(0).astype("int64")
     return df[["date", "ticker", "adj_close", "volume"]]
 
-def download_batch(tickers: list[str], start: str = START_DATE) -> pd.DataFrame:
+def download_batch(tickers: list[str], start: str = START_DATE, end: str = END_DATE) -> pd.DataFrame:
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             raw = yf.download(
-                tickers, start=start, auto_adjust=True, progress=False, threads=True
+                tickers, start=start, end=end, auto_adjust=True, progress=False, threads=True
             )
             if raw is not None and not raw.empty:
                 return to_long(raw, tickers)
