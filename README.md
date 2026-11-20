@@ -50,32 +50,34 @@ duckdb data/factorlab.duckdb -ui
 
 ## Data
 
-- **Universe:** S&P 500 constituents from the iShares Core S&P 500 ETF (IVV) holdings file, as of 2026-11-09. The file lists 505 equity tickers after cleaning.
+- **Universe:** S&P 500 constituents from the iShares Core S&P 500 ETF (IVV) holdings file, as of 2026-11-09. The file lists 505 equity tickers after cleaning; five were excluded (see below), leaving 500.
 - **Prices:** daily prices from Yahoo Finance via `yfinance`, adjusted for splits and dividends, from 2015-01-02 to 2026-11-10 (end date fixed so all tickers cover the same period). Downloaded [date].
 - **Storage:** DuckDB (`data/factorlab.duckdb`), one row per date and ticker. Data files are not committed to the repository.
 
 ### Excluded tickers
 
-Two tickers in the holdings file were excluded because they have no usable price history:
+Five tickers in the holdings file were excluded because they have no usable price history:
 
 | Ticker | Reason |
 |---|---|
 | `HOLX` | Hologic was acquired by Blackstone and TPG and delisted from Nasdaq in April 2026, yet it still appears in the November 2026 holdings file. Yahoo Finance has no price data for it. |
 | `SKYD-WS` | A warrant, not a common stock. |
+| `SW` | 50.6% of days have exactly 0% return, concentrated before the US listing, so Yahoo's early history appears to come from another exchange's trading calendar. |
+| `FERG` | Same issue: 36.4% zero-return days, concentrated before the US listing. |
+| `AMCR` | Same issue: 33.7% zero-return days, concentrated before the US listing. |
 
-The final universe is 503 tickers.
+The final universe is 500 tickers.
 
 ### Data quality checks
 
-Checks run with `scripts/check_data.py` on [date]:
+Checks run with `scripts/check_data.py`, `scripts/data_quality_summary.py`
 
-- **Coverage:** 503 tickers, 1,444,124 rows, 2015-01-02 to 2026-11-10; all tickers end on the last date.
+- **Coverage:** 500 tickers, 1,435,178 rows, 2015-01-02 to 2026-11-10; all tickers end on the last date.
 - **Invalid prices:** none (no missing or non-positive adjusted closes).
 - **Missing days:** none inside any ticker's own history.
 - **Short histories:** four tickers have under about 1.1 years of data (VYLR, HONA, FDXF, Q), mostly recent listings or spin-offs; they will have no 12-1 momentum signal until they have enough history.
-- **Large daily moves (>40%):** [N total from the summary script; the 20 largest reviewed]. I verified [N]: for example MRNA on 2026-08-19 (+177%) matches a Phase 3 trial announcement. [DHR on 2016-07-05 (+61%) looks like an adjusted-price artifact around a spin-off and is left in the data but flagged.] [Unverified: list.]
-- **Stale prices:** SW, FERG and AMCR had [33-51]% zero-return days, [your finding]. [Excluded / handled as described.]
-- **Spot check against Yahoo Finance website:** [your result].
+- **Large daily moves (>40%):** 31 cases. The largest, MRNA on 2026-08-19 (+177%), matches a Phase 3 trial announcement. The rest were not individually verified.
+- **Stale prices:** SW, FERG and AMCR had 34-51% zero-return days, concentrated before each company's US listing, so Yahoo's early history appears to come from another exchange's calendar. They are excluded from the universe.
 
 ## Known limitations
 
