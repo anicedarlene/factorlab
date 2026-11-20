@@ -92,3 +92,11 @@ def update_prices(tickers: list[str], con=None) -> list[str]:
 
     print(f"Done. Failed tickers ({len(failed)}): {failed}")
     return failed
+
+def load_prices(con=None) -> pd.DataFrame:
+    """Adjusted closes as a wide table: dates as rows, tickers as columns."""
+    con = con or get_connection()
+    df = con.execute("SELECT date, ticker, adj_close FROM prices").fetchdf()
+    wide = df.pivot(index="date", columns="ticker", values="adj_close").sort_index()
+    wide.index = pd.to_datetime(wide.index)
+    return wide
