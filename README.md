@@ -96,10 +96,10 @@ To be added once the backtests are complete.
 - [x] Project setup and README plan
 - [x] Concept notes (`docs/concepts.md`)
 - [x] Data layer: download universe and store in DuckDB
-- [ ] Backtest engine with lagged signals and transaction costs
-- [ ] Momentum, low-volatility and reversal factors
-- [ ] Quintile and IC analysis
-- [ ] Performance metrics
+- [x] Backtest engine with lagged signals and transaction costs
+- [x] Momentum, low-volatility and reversal factors
+- [x] Quintile and IC analysis
+- [x] Performance metrics
 - [ ] Walk-forward validation and lookahead-bias tests
 - [ ] Research write-up with results and limitations
 - [ ] Final README polish (results charts, usage example)
